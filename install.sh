@@ -14,7 +14,7 @@ set -u -o pipefail
 # because we use space-separated lists for MISSING_DEPS and INSTALL_FAILED
 
 # ---------- Config ----------
-REPO_URL="https://github.com/ShipSecAI/studio"
+REPO_URL="https://github.com/o54ma-4l5h4r1f/studio"
 REPO_DIR="studio"
 WAIT_DOCKER_SEC=60
 
