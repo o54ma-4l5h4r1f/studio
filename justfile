@@ -32,9 +32,77 @@ init:
     set -euo pipefail
     echo "🔧 Setting up ShipSec Studio..."
 
-    # Install dependencies if needed
+    # --- Install system dependencies ---
+    echo "🔍 Checking system dependencies..."
+
+    # Install curl if missing
+    if ! command -v curl &> /dev/null; then
+        echo "📥 Installing curl..."
+        if command -v apt-get &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y curl
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y curl
+        elif command -v brew &> /dev/null; then
+            brew install curl
+        else
+            echo "❌ Could not install curl. Please install it manually."
+            exit 1
+        fi
+        echo "✅ curl installed"
+    else
+        echo "✅ curl already installed"
+    fi
+
+    # Install jq if missing
+    if ! command -v jq &> /dev/null; then
+        echo "📥 Installing jq..."
+        if command -v apt-get &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y jq
+        elif command -v brew &> /dev/null; then
+            brew install jq
+        else
+            echo "❌ Could not install jq. Please install it manually."
+            exit 1
+        fi
+        echo "✅ jq installed"
+    else
+        echo "✅ jq already installed"
+    fi
+
+    # Install bun if missing
+    if ! command -v bun &> /dev/null; then
+        echo "📥 Installing bun..."
+        curl -fsSL https://bun.sh/install | bash
+        export BUN_INSTALL="$HOME/.bun"
+        export PATH="$BUN_INSTALL/bin:$PATH"
+        echo "✅ bun installed ($(bun --version))"
+    else
+        echo "✅ bun already installed ($(bun --version))"
+    fi
+
+    # Install just if missing (skip if already running inside just)
+    if ! command -v just &> /dev/null; then
+        echo "📥 Installing just..."
+        curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+        echo "✅ just installed"
+    else
+        echo "✅ just already installed"
+    fi
+
+    # Check for Docker
+    if ! command -v docker &> /dev/null; then
+        echo "⚠️  Docker is not installed. Please install Docker: https://docs.docker.com/get-docker/"
+    else
+        echo "✅ docker already installed ($(docker --version | cut -d' ' -f3 | tr -d ','))"
+    fi
+
+    echo ""
+
+    # --- Install project dependencies ---
     if [ ! -d "node_modules" ]; then
-        echo "📦 Installing dependencies..."
+        echo "📦 Installing project dependencies..."
         bun install
         echo "✅ Dependencies installed"
     else
@@ -605,7 +673,7 @@ help:
     @echo "ShipSec Studio"
     @echo ""
     @echo "Getting Started:"
-    @echo "  just init       Set up dependencies and environment files"
+    @echo "  just init       Install all dependencies (bun, just, curl, jq) and set up env files"
     @echo ""
     @echo "Development (hot-reload, multi-instance support):"
     @echo "  just dev                Start the active instance (default: 0)"
