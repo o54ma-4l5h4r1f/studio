@@ -107,10 +107,10 @@ services:
       - --node-id=0
       - --check=false
       # Internal listener for Docker network containers (redpanda-console, etc.)
-      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:19092
-      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:19092
+      - --kafka-addr=internal://0.0.0.0:9092,external://0.0.0.0:29092
+      - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:29092
     ports:
-      - '19092:19092' # External Kafka port for host apps
+      - '29092:29092' # External Kafka port for host apps
       - '9644:9644'
     volumes:
       - redpanda_data:/var/lib/redpanda/data
