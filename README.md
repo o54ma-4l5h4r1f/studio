@@ -10,6 +10,12 @@
 
 # ShipSec Studio
 
+## About This Project
+
+ShipSec Studio is my go-to platform for automating and orchestrating security workflows. It brings together vulnerability scanning, asset discovery, and AI-driven analysis into a single visual interface — allowing security teams to build, schedule, and monitor complex security pipelines without writing boilerplate infrastructure code. Built on top of Temporal for durable execution and Docker for isolated runtimes, it is designed to be self-hosted, extensible, and production-ready.
+
+---
+
 **Open-Source Security Workflow Orchestration Platform.**
 
 > ShipSec is currently in active development. We are optimizing the platform for stable production use and high-performance security operations.
