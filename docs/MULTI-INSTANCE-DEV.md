@@ -61,7 +61,7 @@ Shared infra (fixed ports for all instances):
 | Temporal UI      | 8081        |
 | Redis            | 6379        |
 | Redpanda (Kafka) | 29092       |
-| Redpanda Console | 8082        |
+| Redpanda Console | 18082       |
 | MinIO API/UI     | 9000 / 9001 |
 | Loki             | 3100        |
 

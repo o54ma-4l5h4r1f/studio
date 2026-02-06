@@ -166,7 +166,7 @@ services:
     environment:
       CONFIG_FILEPATH: /etc/redpanda/console-config.yaml
     ports:
-      - '8082:8080'
+      - '18082:8080'
     volumes:
       - ./redpanda-console-config.yaml:/etc/redpanda/console-config.yaml:ro
     restart: unless-stopped
