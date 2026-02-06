@@ -111,7 +111,6 @@ services:
       - --advertise-kafka-addr=internal://redpanda:9092,external://localhost:19092
     ports:
       - '19092:19092' # External Kafka port for host apps
-      - '9092:9092' # Internal port (for Docker-to-Docker only, maps for debugging)
       - '9644:9644'
     volumes:
       - redpanda_data:/var/lib/redpanda/data
