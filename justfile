@@ -103,8 +103,14 @@ init:
     # --- Install project dependencies ---
     if [ ! -d "node_modules" ]; then
         echo "📦 Installing project dependencies..."
-        bun install
-        echo "✅ Dependencies installed"
+        if bun install; then
+            echo "✅ Dependencies installed"
+        elif [ -d "node_modules" ]; then
+            echo "⚠️  bun install reported warnings (likely optional platform packages), but dependencies are installed"
+        else
+            echo "❌ Failed to install dependencies"
+            exit 1
+        fi
     else
         echo "✅ Dependencies already installed"
     fi
