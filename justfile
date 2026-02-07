@@ -230,13 +230,13 @@ dev *args:
             
             # Start shared infrastructure (one stack for all instances)
             echo "⏳ Starting shared infrastructure..."
-            docker compose -f docker/docker-compose.infra.yml \
+            docker-compose -f docker/docker-compose.infra.yml \
                 --project-name="$INFRA_PROJECT_NAME" \
                 up -d
             
             # Wait for Postgres
             echo "⏳ Waiting for infrastructure..."
-            POSTGRES_CONTAINER="$(docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres)"
+            POSTGRES_CONTAINER="$(docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres)"
             if [ -n "$POSTGRES_CONTAINER" ]; then
                 timeout 30s bash -c "until docker exec $POSTGRES_CONTAINER pg_isready -U shipsec >/dev/null 2>&1; do sleep 1; done" || true
             fi
@@ -426,7 +426,7 @@ prod action="start":
             # Use --env-file if docker/.env exists
             ENV_FLAG=""
             [ -f "docker/.env" ] && ENV_FLAG="--env-file docker/.env"
-            docker compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
+            docker-compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
             echo ""
             echo "✅ Production environment ready"
             echo "   Frontend:    http://localhost:8090"
@@ -438,7 +438,7 @@ prod action="start":
             bun backend/scripts/version-check-summary.ts 2>/dev/null || true
             ;;
         stop)
-            docker compose -f docker/docker-compose.full.yml down
+            docker-compose -f docker/docker-compose.full.yml down
             echo "✅ Production stopped"
             ;;
         build)
@@ -457,7 +457,7 @@ prod action="start":
             # Use --env-file if docker/.env exists
             ENV_FLAG=""
             [ -f "docker/.env" ] && ENV_FLAG="--env-file docker/.env"
-            docker compose $ENV_FLAG -f docker/docker-compose.full.yml up -d --build
+            docker-compose $ENV_FLAG -f docker/docker-compose.full.yml up -d --build
             echo "✅ Production built and started"
             echo "   Frontend: http://localhost:8090"
             echo "   Backend:  http://localhost:3211"
@@ -467,13 +467,13 @@ prod action="start":
             bun backend/scripts/version-check-summary.ts 2>/dev/null || true
             ;;
         logs)
-            docker compose -f docker/docker-compose.full.yml logs -f
+            docker-compose -f docker/docker-compose.full.yml logs -f
             ;;
         status)
-            docker compose -f docker/docker-compose.full.yml ps
+            docker-compose -f docker/docker-compose.full.yml ps
             ;;
         clean)
-            docker compose -f docker/docker-compose.full.yml down -v
+            docker-compose -f docker/docker-compose.full.yml down -v
             docker system prune -f
             echo "✅ Production cleaned"
             ;;
@@ -512,7 +512,7 @@ prod action="start":
             # Use --env-file if docker/.env exists
             ENV_FLAG=""
             [ -f "docker/.env" ] && ENV_FLAG="--env-file docker/.env"
-            docker compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
+            docker-compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
 
             echo ""
             echo "✅ ShipSec Studio $LATEST_TAG ready"
@@ -566,7 +566,7 @@ prod-images action="start":
             # Use --env-file if docker/.env exists
             ENV_FLAG=""
             [ -f "docker/.env" ] && ENV_FLAG="--env-file docker/.env"
-            DOCKER_BUILDKIT=1 docker compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
+            DOCKER_BUILDKIT=1 docker-compose $ENV_FLAG -f docker/docker-compose.full.yml up -d
             echo ""
             echo "✅ Production environment ready"
             echo "   Frontend:    http://localhost:8090"
@@ -574,7 +574,7 @@ prod-images action="start":
             echo "   Temporal UI: http://localhost:8081"
             ;;
         stop)
-            docker compose -f docker/docker-compose.full.yml down
+            docker-compose -f docker/docker-compose.full.yml down
             echo "✅ Production stopped"
             ;;
         build-test)
@@ -610,13 +610,13 @@ prod-images action="start":
             echo "   Run: just prod-images start"
             ;;
         logs)
-            docker compose -f docker/docker-compose.full.yml logs -f
+            docker-compose -f docker/docker-compose.full.yml logs -f
             ;;
         status)
-            docker compose -f docker/docker-compose.full.yml ps
+            docker-compose -f docker/docker-compose.full.yml ps
             ;;
         clean)
-            docker compose -f docker/docker-compose.full.yml down -v
+            docker-compose -f docker/docker-compose.full.yml down -v
             docker system prune -f
             echo "✅ Production cleaned"
             ;;
@@ -634,18 +634,18 @@ infra action="up":
     INFRA_PROJECT_NAME="shipsec-infra"
     case "{{action}}" in
         up)
-            docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" up -d
+            docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" up -d
             echo "✅ Infrastructure started (Postgres, Temporal, MinIO, Redis)"
             ;;
         down)
-            docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" down
+            docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" down
             echo "✅ Infrastructure stopped"
             ;;
         logs)
-            docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" logs -f
+            docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" logs -f
             ;;
         clean)
-            docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" down -v
+            docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" down -v
             echo "✅ Infrastructure cleaned"
             ;;
         *)
@@ -665,10 +665,10 @@ status:
     pm2 status 2>/dev/null || echo "  (PM2 not running)"
     echo ""
     echo "=== Infrastructure Containers ==="
-    docker compose -f docker/docker-compose.infra.yml ps 2>/dev/null || echo "  (Infrastructure not running)"
+    docker-compose -f docker/docker-compose.infra.yml ps 2>/dev/null || echo "  (Infrastructure not running)"
     echo ""
     echo "=== Production Containers ==="
-    docker compose -f docker/docker-compose.full.yml ps 2>/dev/null || echo "  (Production not running)"
+    docker-compose -f docker/docker-compose.full.yml ps 2>/dev/null || echo "  (Production not running)"
 
 # Reset database for specific instance or all instances
 # Usage: just db-reset [instance]
@@ -688,7 +688,7 @@ db-reset instance="0":
 
 # Build production images without starting
 build:
-    docker compose -f docker/docker-compose.full.yml build
+    docker-compose -f docker/docker-compose.full.yml build
     echo "✅ Images built"
 
 # === Help ===
