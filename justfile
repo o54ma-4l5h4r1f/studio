@@ -153,6 +153,11 @@ dev *args:
     # Ensure bun, pm2 and node_modules/.bin are in PATH
     export PATH="$HOME/.bun/bin:$(pwd)/node_modules/.bin:$PATH"
 
+    # Ensure node is available (pm2 requires it); symlink bun as node if missing
+    if ! command -v node &> /dev/null; then
+        ln -sf "$(which bun)" "$HOME/.bun/bin/node"
+    fi
+
     # Parse arguments: instance can be 0-9, action is start/stop/logs/status/clean
     INSTANCE="$(./scripts/active-instance.sh get)"
     ACTION="start"
