@@ -249,8 +249,8 @@ dev *args:
             export SHIPSEC_ENV=development
             export NODE_ENV=development
             export TERMINAL_REDIS_URL="redis://localhost:6379"
-            export LOG_KAFKA_BROKERS="localhost:29092"
-            export EVENT_KAFKA_BROKERS="localhost:29092"
+            export LOG_KAFKA_BROKERS="localhost:19092"
+            export EVENT_KAFKA_BROKERS="localhost:19092"
             
             # Update git SHA and start PM2 with instance-specific config
             ./scripts/set-git-sha.sh || true
