@@ -149,7 +149,10 @@ init:
 dev *args:
     #!/usr/bin/env bash
     set -euo pipefail
-    
+
+    # Ensure bun, pm2 and node_modules/.bin are in PATH
+    export PATH="$HOME/.bun/bin:$(pwd)/node_modules/.bin:$PATH"
+
     # Parse arguments: instance can be 0-9, action is start/stop/logs/status/clean
     INSTANCE="$(./scripts/active-instance.sh get)"
     ACTION="start"
@@ -420,6 +423,7 @@ prod-init:
 prod action="start":
     #!/usr/bin/env bash
     set -euo pipefail
+    export PATH="$HOME/.bun/bin:$(pwd)/node_modules/.bin:$PATH"
     case "{{action}}" in
         start)
             echo "🚀 Starting production environment..."
@@ -659,6 +663,7 @@ infra action="up":
 status:
     #!/usr/bin/env bash
     set -euo pipefail
+    export PATH="$HOME/.bun/bin:$(pwd)/node_modules/.bin:$PATH"
     echo "📊 ShipSec Studio Status"
     echo ""
     echo "=== PM2 Services ==="
