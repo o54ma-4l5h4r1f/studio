@@ -71,6 +71,24 @@ init:
         echo "✅ jq already installed"
     fi
 
+    # Install unzip if missing (required by bun installer)
+    if ! command -v unzip &> /dev/null; then
+        echo "📥 Installing unzip..."
+        if command -v apt-get &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y unzip
+        elif command -v yum &> /dev/null; then
+            sudo yum install -y unzip
+        elif command -v brew &> /dev/null; then
+            brew install unzip
+        else
+            echo "❌ Could not install unzip. Please install it manually."
+            exit 1
+        fi
+        echo "✅ unzip installed"
+    else
+        echo "✅ unzip already installed"
+    fi
+
     # Install bun if missing
     if ! command -v bun &> /dev/null; then
         echo "📥 Installing bun..."
