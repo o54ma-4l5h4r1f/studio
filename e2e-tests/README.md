@@ -5,8 +5,9 @@ End-to-end tests for workflow execution with real backend, worker, and infrastru
 ## Prerequisites
 
 Local development environment must be running:
+
 ```bash
-docker compose -p shipsec up -d
+docker-compose -p shipsec up -d
 pm2 start pm2.config.cjs
 ```
 

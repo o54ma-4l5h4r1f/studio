@@ -31,7 +31,7 @@ log_info "Resetting database for instance $INSTANCE..."
 echo ""
 
 # Find PostgreSQL container
-POSTGRES_CONTAINER=$(docker compose -f docker/docker-compose.infra.yml \
+POSTGRES_CONTAINER=$(docker-compose -f docker/docker-compose.infra.yml \
   --project-name="$COMPOSE_PROJECT_NAME" \
   ps -q postgres 2>/dev/null || echo "")
 

@@ -27,7 +27,7 @@ log_warn() { echo -e "${YELLOW}⚠️${NC} $*"; }
 log_error() { echo -e "${RED}❌${NC} $*"; }
 
 POSTGRES_CONTAINER="$(
-  docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres 2>/dev/null || true
+  docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres 2>/dev/null || true
 )"
 
 if [ -z "$POSTGRES_CONTAINER" ]; then
@@ -86,7 +86,7 @@ fi
 
 # Best-effort Kafka topic creation in shared Redpanda.
 REDPANDA_CONTAINER="$(
-  docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q redpanda 2>/dev/null || true
+  docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q redpanda 2>/dev/null || true
 )"
 if [ -n "$REDPANDA_CONTAINER" ]; then
   log_info "Ensuring Kafka topics exist for instance $INSTANCE (best-effort)..."

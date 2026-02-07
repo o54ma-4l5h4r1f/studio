@@ -24,7 +24,7 @@ log_success() { echo -e "${GREEN}✅${NC} $*"; }
 log_error() { echo -e "${RED}❌${NC} $*"; }
 
 POSTGRES_CONTAINER="$(
-  docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres 2>/dev/null || true
+  docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q postgres 2>/dev/null || true
 )"
 
 if [ -z "$POSTGRES_CONTAINER" ]; then
@@ -45,7 +45,7 @@ if command -v temporal >/dev/null 2>&1; then
 fi
 
 REDPANDA_CONTAINER="$(
-  docker compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q redpanda 2>/dev/null || true
+  docker-compose -f docker/docker-compose.infra.yml --project-name="$INFRA_PROJECT_NAME" ps -q redpanda 2>/dev/null || true
 )"
 if [ -n "$REDPANDA_CONTAINER" ]; then
   log_info "Deleting Kafka topics for instance $INSTANCE (best-effort)..."
